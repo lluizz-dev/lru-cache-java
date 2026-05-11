@@ -2,7 +2,25 @@ package main.java;
 
 import java.util.Scanner;
 
+/**
+ * Ponto de entrada da aplicação de demonstração do LRU Cache.
+ *
+ * <p>Simula o comportamento de um sistema de cache de páginas web,
+ * onde a primeira busca consulta o banco de dados (lenta) e as
+ * seguintes retornam instantaneamente pelo cache.</p>
+ *
+ * <p>O cache é configurado com capacidade 2 para facilitar a visualização
+ * do comportamento LRU: ao inserir um terceiro item, o menos recentemente
+ * usado é removido automaticamente.</p>
+ */
 public class Main {
+
+    /**
+     * Inicializa o banco de dados simulado, o cache LRU e o menu interativo.
+     *
+     * @param args argumentos de linha de comando (não utilizados)
+     * @throws InterruptedException se a thread for interrompida durante a simulação de latência
+     */
     public static void main(String[] args) throws InterruptedException {
         FakeDataBase fakeDB = new FakeDataBase();
         Cache<String, String> cache = new LRUCache<>(2);
@@ -33,6 +51,18 @@ public class Main {
         }
     }
 
+    /**
+     * Realiza a busca de uma página, priorizando o cache antes de consultar o banco.
+     *
+     * <p>Se a página estiver no cache (cache hit), retorna imediatamente.
+     * Caso contrário (cache miss), consulta o banco de dados simulado,
+     * armazena o resultado no cache e exibe o conteúdo.</p>
+     *
+     * @param chave  a identificação da página a ser buscada
+     * @param cache  a instância do cache LRU
+     * @param fakeDB a instância do banco de dados simulado
+     * @throws InterruptedException se a thread for interrompida durante a consulta ao banco
+     */
     static void buscar(String chave, Cache<String, String> cache, FakeDataBase fakeDB) throws InterruptedException {
         System.out.println("\nBuscando: " + chave);
         if (cache.containsKey(chave)) {
